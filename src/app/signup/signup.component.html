@@ -1,0 +1,116 @@
+<div
+  class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-indigo-400 to-indigo-300"
+>
+  <div class="max-w-md w-full space-y-8">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Create your account
+        </h2>
+      </div>
+      <form
+        class="mt-8 space-y-6"
+        [formGroup]="signUpForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <input type="hidden" name="remember" value="true" />
+        <div class="-space-y-px">
+          <div>
+            <label for="name" class="sr-only">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autocomplete="John Doe"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Name"
+              formControlName="name"
+              [ngClass]="{ 'border-red-500': submitted && f['name'].errors }"
+            />
+            <div *ngIf="submitted && f['name'].errors">
+              <div
+                *ngIf="f['name'].errors?.['required']"
+                class="font-light text-red-500 text-xs"
+              >
+                Name is required
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="email-address" class="sr-only">Email address</label>
+            <input
+              id="email-address"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Email address"
+              formControlName="email"
+              [ngClass]="{ 'border-red-500': submitted && f['email'].errors }"
+            />
+            <div *ngIf="submitted && f['email'].errors">
+              <div
+                *ngIf="f['email'].errors?.['required']"
+                class="font-light text-red-500 text-xs"
+              >
+                Email is required
+              </div>
+              <div
+                *ngIf="f['email'].errors?.['email']"
+                class="font-light text-red-500 text-xs"
+              >
+                Email must be a valid email address
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="password" class="sr-only">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-b-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Password"
+              formControlName="password"
+              [ngClass]="{
+                'border-red-500': submitted && f['password'].errors
+              }"
+            />
+            <div *ngIf="submitted && f['password'].errors">
+              <div
+                *ngIf="f['password'].errors?.['required']"
+                class="font-light text-red-500 text-xs"
+              >
+                Password is required
+              </div>
+              <div
+                *ngIf="f['password'].errors?.['minlength']"
+                class="font-light text-red-500 text-xs"
+              >
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          href="/login"
+          class="font-medium text-indigo-600 hover:text-indigo-500 text-sm"
+        >
+          Already have an account? Sign In.
+        </a>
+
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
