@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { AuthenticationService } from '../_services/authentication.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -11,10 +14,11 @@ export class SignupComponent implements OnInit {
   signUpForm: FormGroup;
   loading = false;
   submitted = false;
-  constructor(private router: Router) {
-    // if (this.authenticationService.currentUserValue) {
-    //     this.router.navigate(['/']);
-    // }
+  constructor(private router: Router,private authenticationService: AuthenticationService,
+        private userService: UserService,) {
+    if (this.authenticationService.currentUserValue) {
+        this.router.navigate(['/']);
+    }
   }
 
   ngOnInit(): void {
@@ -44,18 +48,18 @@ export class SignupComponent implements OnInit {
     }
 
     this.loading = true;
-    // this.userService
-    //   .register(this.registerForm.value)
-    //   .pipe(first())
-    //   .subscribe(
-    //     (data) => {
-    //       this.alertService.success('Registration successful', true);
-    //       this.router.navigate(['/login']);
-    //     },
-    //     (error) => {
-    //       this.alertService.error(error);
-    //       this.loading = false;
-    //     }
-    //   );
+    this.userService
+      .register(this.signUpForm.value)
+      .pipe(first())
+      .subscribe(
+        (data) => {
+        //   this.alertService.success('Registration successful', true);
+          this.router.navigate(['/login']);
+        },
+        (error) => {
+        //   this.alertService.error(error);
+          this.loading = false;
+        }
+      );
   }
 }

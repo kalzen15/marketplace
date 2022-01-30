@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -19,11 +21,13 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   constructor(
     private route: ActivatedRoute,
-    private router: Router // private authenticationService: AuthenticationService, // private alertService: AlertService
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    // private alertService: AlertService
   ) {
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(['/']);
-    // }
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit(): void {
@@ -51,17 +55,17 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    // this.authenticationService
-    //   .login(this.f.username.value, this.f.password.value)
-    //   .pipe(first())
-    //   .subscribe(
-    //     (data) => {
-    //       this.router.navigate([this.returnUrl]);
-    //     },
-    //     (error) => {
-    //       this.alertService.error(error);
-    //       this.loading = false;
-    //     }
-    //   );
+    this.authenticationService
+      .login(this.f['email'].value, this.f['password'].value)
+      .pipe(first())
+      .subscribe(
+        (data) => {
+          this.router.navigate([this.returnUrl]);
+        },
+        (error) => {
+        //   this.alertService.error(error);
+          this.loading = false;
+        }
+      );
   }
 }
