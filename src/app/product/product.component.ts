@@ -1,13 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription, take } from "rxjs";
-import { interval } from "rxjs";
-import { Product } from "../_models/product";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, take } from 'rxjs';
+import { interval } from 'rxjs';
 
 @Component({
-  selector: "app-product",
-  templateUrl: "./product.component.html",
-  styleUrls: ["./product.component.css"],
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
   profileMenu = false;
@@ -18,7 +17,7 @@ export class ProductComponent implements OnInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.product = this.router.getCurrentNavigation()?.extras.state;
-    console.log("this.product", this.product);
+    console.log('this.product', this.product);
   }
   dhms(t: any) {
     var years, days, hours, minutes, seconds;
@@ -33,12 +32,12 @@ export class ProductComponent implements OnInit {
     seconds = t % 60;
 
     return [
-      years > 0 ? years + "y" : "",
-      days + "d",
-      hours + "h",
-      minutes + "m",
-      seconds + "s",
-    ].join(" ");
+      years > 0 ? years + 'y' : '',
+      days + 'd',
+      hours + 'h',
+      minutes + 'm',
+      seconds + 's',
+    ].join(' ');
   }
 
   ngOnInit(): void {

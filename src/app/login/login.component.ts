@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { AlertService } from '../_services/alert.service';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    // private alertService: AlertService
+    private alertService: AlertService
   ) {
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/']);
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     // // reset alerts on submit
-    // this.alertService.clear();
+    this.alertService.clear();
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         (error) => {
-        //   this.alertService.error(error);
+          this.alertService.error(error);
           this.loading = false;
         }
       );

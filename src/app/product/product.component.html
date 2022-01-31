@@ -22,7 +22,6 @@
         </div>
 
         <div class="mt-6 flex items-center">
-          <!-- Heroicon name: solid/check -->
           <svg
             class="flex-shrink-0 w-5 h-5 text-green-500"
             xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +70,61 @@
           </button>
         </div>
       </section>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col px-40">
+  <h3
+    class="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl py-3"
+  >
+    Active Bids
+  </h3>
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div
+        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+      >
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let bid of product.bidsList">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+              >
+                {{ bid.name }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ bid.email }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ bid.price }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -4,8 +4,8 @@ export class User {
   password: string;
   name: string;
   token: string;
- walletItems:Object[];
- walletBalance:number;
-activeBids:Object[];
-engagedWalletBalance:number;
+  walletItems: Array<any>;
+  walletBalance: number;
+  activeBids: Array<any>;
+  engagedWalletBalance: number;
 }
