@@ -1,0 +1,276 @@
+<app-navbar></app-navbar>
+<div class="bg-white">
+  <div
+    class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8"
+  >
+    <div class="lg:max-w-lg lg:self-end">
+      <div class="mt-4">
+        <h1
+          class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
+        >
+          {{ product.name }}
+        </h1>
+      </div>
+
+      <section aria-labelledby="information-heading" class="mt-4">
+        <h2 id="information-heading" class="sr-only">Product information</h2>
+
+        <div class="mt-4 space-y-6">
+          <p class="text-base text-gray-500">
+            {{ product.description }}
+          </p>
+        </div>
+
+        <div class="mt-6 flex items-center">
+          <svg
+            class="flex-shrink-0 w-5 h-5 text-green-500"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+            *ngIf="isAvailable"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          <p
+            class="ml-2 text-xl text-grey-500"
+            *ngIf="isAvailable && !product.sold; else sold"
+          >
+            Sale ends in
+            <span class="font-bold text-indigo-700"> {{ message }}</span>
+          </p>
+          <ng-template #sold>
+            <p class="ml-2 text-xl font-bold text-red-500">
+              Sale ended!!
+            </p></ng-template
+          >
+        </div>
+        <div class="mt-4 space-y-6">
+          <p class="text-xl text-red-500" *ngIf="product.sold">Sold</p>
+          <p class="text-xl text-green-500" *ngIf="!product.sold">
+            Awaiting Sale
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Product image -->
+    <div class="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2 lg:self-center">
+      <div class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
+        <img
+          src="{{ product.asset }}"
+          alt=""
+          class="w-full h-full object-center object-cover"
+        />
+      </div>
+    </div>
+
+    <!-- Product form -->
+    <div class="mt-10 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
+      <section aria-labelledby="options-heading">
+        <h2 id="options-heading" class="sr-only">Product options</h2>
+
+        <div class="mt-10">
+          <button
+            class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+            (click)="modal = true"
+            *ngIf="isAvailable && !saleByUser"
+          >
+            Place Bid
+          </button>
+        </div>
+        <div class="mt-10">
+          <button
+            class="w-full bg-white border border-red-500 rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-red-500 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500"
+            *ngIf="saleByUser && !product.sold"
+            (click)="onEndSale()"
+          >
+            End Sale
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col px-40">
+  <h3
+    class="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl py-3"
+  >
+    Active Bids
+  </h3>
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div
+        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+      >
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let bid of product.bidsList.reverse()">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+              >
+                {{ bid.name }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ bid.email }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ bid.price }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="py-12 bg-gray-700 bg-opacity-75 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+  id="modal"
+  *ngIf="modal"
+>
+  <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
+    <div
+      class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400"
+    >
+      <div class="w-full flex justify-start text-gray-600 mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-wallet"
+          width="52"
+          height="52"
+          viewBox="0 0 24 24"
+          stroke-width="1"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <path
+            d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"
+          />
+          <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
+        </svg>
+      </div>
+      <h1
+        class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
+      >
+        Enter Bid Amount
+      </h1>
+      <label
+        for="bid"
+        class="text-gray-800 text-sm font-bold leading-tight tracking-normal"
+        >Bid Amount</label
+      >
+      <input
+        id="bid"
+        type="number"
+        class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+        placeholder="1000"
+        #bidAmount
+      />
+
+      <div class="flex items-center justify-start w-full">
+        <button
+          class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+          (click)="onPlaceBid()"
+        >
+          Place Bid
+        </button>
+        <button
+          class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
+          (click)="modal = !modal"
+        >
+          Cancel
+        </button>
+      </div>
+      <button
+        class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+        (click)="modal = !modal"
+        aria-label="close modal"
+        role="button"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-x"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+<!--
+<script>
+  let modal = document.getElementById("modal");
+  function modalHandler(val) {
+    if (val) {
+      fadeIn(modal);
+    } else {
+      fadeOut(modal);
+    }
+  }
+  function fadeOut(el) {
+    el.style.opacity = 1;
+    (function fade() {
+      if ((el.style.opacity -= 0.1) < 0) {
+        el.style.display = "none";
+      } else {
+        requestAnimationFrame(fade);
+      }
+    })();
+  }
+  function fadeIn(el, display) {
+    el.style.opacity = 0;
+    el.style.display = display || "flex";
+    (function fade() {
+      let val = parseFloat(el.style.opacity);
+      if (!((val += 0.2) > 1)) {
+        el.style.opacity = val;
+        requestAnimationFrame(fade);
+      }
+    })();
+  }
+</script> -->
+
+<app-footer></app-footer>
